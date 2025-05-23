@@ -25,7 +25,7 @@ public class AdminPanel extends JPanel {
         // Crear un panel
         // NAVBAR SUPERIOR
         JPanel navBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        navBar.setOpaque(true);
+        navBar.setOpaque(false);
 
         btnCerrarSesion = new JButton("Cerrar sesión");
         btnCerrarSesion.setForeground(Color.black);
