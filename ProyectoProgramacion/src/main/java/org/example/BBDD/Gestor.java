@@ -97,12 +97,14 @@ public class Gestor {
 
     //Panel Administrador
     public void insertarTrabajador(Trabajadores a) {
-        //
+        // codigo sql para insertar
         String sql = "INSERT INTO trabajadores (usuario, contrasena) VALUES (?, ?)";
         try (Connection con = conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+            // sirve para decir que es la interrogacion
             pst.setString(1, a.getUsuario());
             pst.setString(2, a.getContrasena());
 
+            // ejecuta el sql
             pst.executeUpdate();
             System.out.println("Trabajador insertado correctamente.");
         } catch (SQLException e) {
@@ -111,6 +113,7 @@ public class Gestor {
     }
 
     public void eliminarTrabajador(String usuario) {
+        // codigo sql para eliminar
         String sql = "DELETE FROM trabajadores WHERE usuario = ?";
         try (Connection con = conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
             pst.setString(1, usuario);
@@ -134,6 +137,7 @@ public class Gestor {
             pst.setString(3, usuarioActual);
 
             int filasAfectadas = pst.executeUpdate();
+            // mira si se han hecho cambios
             if (filasAfectadas > 0) {
                 System.out.println("Trabajador modificado correctamente.");
             } else {
@@ -152,7 +156,7 @@ public class Gestor {
 
             pst.setString(1, nombreUsuario);
             try (ResultSet rs = pst.executeQuery()) {
-                return rs.next(); // Si hay al menos una fila, el usuario existe
+                return rs.next(); // Si hay al menos una fila, igual a true
             }
 
         } catch (SQLException e) {
