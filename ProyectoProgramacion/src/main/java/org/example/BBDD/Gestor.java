@@ -169,21 +169,23 @@ public class Gestor {
 
 
     public void mostrarTrabajadoresEnTabla() {
-        String sql = "SELECT usuario, contrasena FROM trabajadores";
+        String sql = "SELECT id_trabajador, usuario, contrasena FROM trabajadores";
 
         try (Connection con = conectar(); PreparedStatement pst = con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
 
             // Crear modelo de tabla
             DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("ID");
             modelo.addColumn("Usuario");
             modelo.addColumn("Contraseña");
 
             // Llenar modelo con los datos de la base de datos
             while (rs.next()) {
+                int id_trabajador = rs.getInt("id_trabajador");
                 String usuario = rs.getString("usuario");
                 String contrasena = rs.getString("contrasena");
-                modelo.addRow(new Object[]{usuario, contrasena});
+                modelo.addRow(new Object[]{id_trabajador, usuario, contrasena});
             }
 
             // Crear tabla con el modelo
@@ -237,7 +239,7 @@ public class Gestor {
     }
     public ArrayList<Object> obtenerListaClientes() {
         ArrayList<Object> lista = new ArrayList<>();
-        String sql = "SELECT id_cliente, nombre, apellidos FROM clientes";
+        String sql = "SELECT id_cliente, nombre, apellidos, numerosocio FROM clientes";
 
         try (Connection conn = conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -247,7 +249,8 @@ public class Gestor {
                 int id = rs.getInt("id_cliente");
                 String nombre = rs.getString("nombre");
                 String apellidos = rs.getString("apellidos");
-                lista.add(id + " - " + nombre + " " + apellidos);
+                String numeroSocio = rs.getString("numerosocio");
+                lista.add(id + " - " + nombre + " " + apellidos + " - " + numeroSocio);
             }
 
         } catch (SQLException e) {
@@ -264,7 +267,7 @@ public class Gestor {
 
     //Tabla juego
     public boolean insertarVenta(LocalDate fecha, int idJuego, int idCliente, int idTrabajador, int cantidad) {
-        String sql = "INSERT INTO venta (fecha, id_juego, id_cliente, id_trabajador, cantidad) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ventas (fecha, id_juego, id_cliente, id_trabajador, cantidad) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -294,7 +297,7 @@ public class Gestor {
             if (filas > 0) {
                 System.out.println("Juego eliminado correctamente.");
             } else {
-                System.out.println("No se encontró el juego con ID " + nombreJuego);
+                System.out.println("No se encontró el juego con nombre: " + nombreJuego);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -373,6 +376,45 @@ public class Gestor {
             return false;
         }
     }
+
+    public int BuscarIDJuego(String nombreJuego) {
+        String sql = "SELECT id_juego FROM juegos WHERE nombre = ?";
+        try (Connection con = conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setString(1, nombreJuego);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id_juego");
+            } else {
+                System.out.println("No se encontró un juego con ese nombre.");
+                return -1; // Valor para indicar que no se encontró el juego
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Valor para indicar error
+        }
+    }
+
+    public int BuscarIDTrabajador(String nombreUsuario) {
+        String sql = "SELECT id_trabajador FROM trabajadores WHERE usuario = ?";
+        try (Connection con = conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setString(1, nombreUsuario);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id_trabajador");
+            } else {
+                System.out.println("No se encontró un trabajador con ese nombre.");
+                return -1; // Valor para indicar que no se encontró el juego
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Valor para indicar error
+        }
+    }
+
+
+
     //Logueo inicial
     public boolean login(String usuario, String contrasena) {
         String sql = "SELECT usuario, contrasena FROM trabajadores WHERE usuario = ? AND contrasena = ?";

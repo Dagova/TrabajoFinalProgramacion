@@ -20,7 +20,7 @@ public class AdminPanel extends JPanel {
 
     public AdminPanel(GameStoreFrame frame) {
         this.frame = frame;
-        imgFondo = new ImageIcon("src/main/java/org/example/imagenes/fondo.jpg").getImage();
+        imgFondo = new ImageIcon(getClass().getResource("/img/fondo.jpg")).getImage();
         setLayout(new BorderLayout());
 
         // NAVBAR SUPERIOR
@@ -44,7 +44,7 @@ public class AdminPanel extends JPanel {
 
         JLabel label = new JLabel("Bienvenido Administrador");
         label.setForeground(Color.WHITE);
-        label.setFont(new Font("Serif", Font.BOLD, 20));
+        label.setFont(new Font("Serif", Font.BOLD, 35));
         label.setHorizontalAlignment(SwingConstants.CENTER);
 
         gbc.gridx = 0;
@@ -136,20 +136,20 @@ public class AdminPanel extends JPanel {
                         String usuario = campoUsuario.getText();
                         String contrasena = campoContrasena.getText();
 
-                            dialogo.dispose();
-                         if (!usuario.isEmpty() && !contrasena.isEmpty() && !usuario.equals("admin")) {
+                            if (!usuario.isEmpty() && !contrasena.isEmpty() && !usuario.equals("admin")) {
                             Trabajadores nuevo = new Trabajadores(usuario, contrasena); // Sin encargado
                             Gestor gestor = new Gestor();
                             if (gestor.existeUsuario(nuevo.getUsuario())) {
                                 JOptionPane.showMessageDialog(dialogo, "Ese usuario ya está en uso", "Error", JOptionPane.ERROR_MESSAGE);
-                                dialogo.dispose();
                             }
                             else {
                                 gestor.insertarTrabajador(nuevo);
                                 JOptionPane.showMessageDialog(dialogo, "Trabajador insertado correctamente.");
                                 dialogo.dispose();
                             }
-                        } else {
+                        } else if (usuario.equals("admin")) {
+                             JOptionPane.showMessageDialog(dialogo, "No puedes insertar un administrador", "Error", JOptionPane.ERROR_MESSAGE);
+                         } else {
                             JOptionPane.showMessageDialog(dialogo, "Rellena todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
@@ -203,10 +203,13 @@ public class AdminPanel extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         String nombreTrabajador = (String) comboTrabajadores.getSelectedItem();
                         // Positivo y entero
-                        if (!nombreTrabajador.isEmpty()) {
+                        if (nombreTrabajador == null) {
+                            JOptionPane.showMessageDialog(dialogo, "Ningun trabajador seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else if (!nombreTrabajador.isEmpty()) {
                             Gestor gestor = new Gestor();
                             gestor.eliminarTrabajador(nombreTrabajador);
-                            JOptionPane.showMessageDialog(dialogo, "Juego eliminado correctamente.");
+                            JOptionPane.showMessageDialog(dialogo, "Trabajador eliminado correctamente.");
                             dialogo.dispose();
                         } else {
                             JOptionPane.showMessageDialog(dialogo, "Rellena todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
@@ -280,8 +283,11 @@ public class AdminPanel extends JPanel {
                             Gestor gestor = new Gestor();
                             gestor.modificarTrabajador(usuario, "admin", contrasena);
                             JOptionPane.showMessageDialog(dialogo, "Trabajador insertado correctamente. \n Recuerda que el nombre de admin se mantendra siempre");
+                            dialogo.dispose();
 
-                        }else if (!usuario.isEmpty() && !contrasena.isEmpty() && !usuarioNew.isEmpty()) {
+                        } else if (!usuario.isEmpty() && !contrasena.isEmpty() && !usuarioNew.isEmpty() && gestor.existeUsuario(usuarioNew)) {
+                            JOptionPane.showMessageDialog(dialogo, "Nombre de usuario en uso", "Error", JOptionPane.ERROR_MESSAGE);
+                        } else if (!usuario.isEmpty() && !contrasena.isEmpty() && !usuarioNew.isEmpty()) {
                             Gestor gestor = new Gestor();
                             gestor.modificarTrabajador(usuario, usuarioNew, contrasena);
                             JOptionPane.showMessageDialog(dialogo, "Trabajador modificado correctamente.");

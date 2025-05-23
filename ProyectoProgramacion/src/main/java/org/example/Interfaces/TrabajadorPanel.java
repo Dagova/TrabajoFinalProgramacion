@@ -18,7 +18,6 @@ public class TrabajadorPanel extends JPanel {
     public JButton btnInssertarJuego;
     public JButton btnBorrarJuego;
 
-
     public JButton btnCerrarSesion;
     private GameStoreFrame frame;
     Gestor gestor = new Gestor();
@@ -27,7 +26,8 @@ public class TrabajadorPanel extends JPanel {
 
     public TrabajadorPanel(GameStoreFrame frame) {
         this.frame = frame;
-        imgFondo = new ImageIcon("src/main/java/org/example/imagenes/fondo.jpg").getImage();
+
+                imgFondo = new ImageIcon(getClass().getResource("/img/fondo.jpg")).getImage();
         setLayout(new BorderLayout());
 
         // NAVBAR SUPERIOR
@@ -72,7 +72,6 @@ public class TrabajadorPanel extends JPanel {
         btnRealizarVenta.setFocusPainted(false);
         gbc.gridy = 2;
         cuerpo.add(btnRealizarVenta, gbc);
-
 
 
         btnActualizarPrecio = new JButton("Actualizar precio");
@@ -153,22 +152,27 @@ public class TrabajadorPanel extends JPanel {
                 JButton btnConfirmarVenta = new JButton("Vender");
 
                 // Añadir componentes al diálogo
-                gbc.gridx = 0; gbc.gridy = 0;
+                gbc.gridx = 0;
+                gbc.gridy = 0;
                 dialogo.add(labelJuego, gbc);
                 gbc.gridx = 1;
                 dialogo.add(comboJuegos, gbc);
 
-                gbc.gridx = 0; gbc.gridy = 1;
+                gbc.gridx = 0;
+                gbc.gridy = 1;
                 dialogo.add(labelCliente, gbc);
                 gbc.gridx = 1;
                 dialogo.add(comboClientes, gbc);
 
-                gbc.gridx = 0; gbc.gridy = 2;
+                gbc.gridx = 0;
+                gbc.gridy = 2;
                 dialogo.add(labelCantidad, gbc);
                 gbc.gridx = 1;
                 dialogo.add(campoCantidad, gbc);
 
-                gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
+                gbc.gridx = 0;
+                gbc.gridy = 3;
+                gbc.gridwidth = 2;
                 dialogo.add(btnConfirmarVenta, gbc);
 
                 // Acción del botón "Vender"
@@ -184,27 +188,28 @@ public class TrabajadorPanel extends JPanel {
                             return;
                         }
 
-                        System.out.println(cantidadTexto);
 
                         try {
                             int cantidad = Integer.parseInt(cantidadTexto);
                             if (cantidad <= 0) throw new NumberFormatException();
+                            int idJuego = gestor.BuscarIDJuego(seleccionJuego);
+                            int idCliente = seleccionCliente.split(" - ")[0].trim().isEmpty() ? 0 : Integer.parseInt(seleccionCliente.split(" - ")[0].trim());
+                            int idTrabajador = gestor.BuscarIDTrabajador(labelNombre.getText().split(" ")[1]); // fijo o extraído si tienes login
 
-                            int idJuego = Integer.parseInt(seleccionJuego.split(" - ")[0]);
-                            int idCliente = Integer.parseInt(seleccionCliente.split(" - ")[0]);
-                            int idTrabajador = 1; // fijo o extraído si tienes login
 
                             LocalDate fecha = LocalDate.now();
 
+
                             // Aquí llamamos a insertarVenta con todos los parámetros
                             boolean resultado = gestor.insertarVenta(fecha, idJuego, idCliente, idTrabajador, cantidad);
+
+
                             if (resultado) {
                                 JOptionPane.showMessageDialog(dialogo, "Venta realizada con éxito.");
                                 dialogo.dispose();
                             } else {
                                 JOptionPane.showMessageDialog(dialogo, "No hay suficiente stock o error al registrar venta.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
-
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(dialogo, "Introduce una cantidad válida.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
@@ -214,8 +219,6 @@ public class TrabajadorPanel extends JPanel {
                 dialogo.setVisible(true);
             }
         });
-
-
 
 
         btnAgregarCliente.addActionListener(e -> {
@@ -245,32 +248,39 @@ public class TrabajadorPanel extends JPanel {
 
             JButton btnInsertar = new JButton("Insertar");
 
-            gbc2.gridx = 0; gbc2.gridy = 0;
+            gbc2.gridx = 0;
+            gbc2.gridy = 0;
             dialogo.add(lblNombre, gbc2);
             gbc2.gridx = 1;
             dialogo.add(campoNombre, gbc2);
 
-            gbc2.gridx = 0; gbc2.gridy = 1;
+            gbc2.gridx = 0;
+            gbc2.gridy = 1;
             dialogo.add(lblApellidos, gbc2);
             gbc2.gridx = 1;
             dialogo.add(campoApellidos, gbc2);
 
-            gbc2.gridx = 0; gbc2.gridy = 2;
+            gbc2.gridx = 0;
+            gbc2.gridy = 2;
             dialogo.add(lblCorreo, gbc2);
             gbc2.gridx = 1;
             dialogo.add(campoCorreo, gbc2);
 
-            gbc2.gridx = 0; gbc2.gridy = 3;
+            gbc2.gridx = 0;
+            gbc2.gridy = 3;
             dialogo.add(lblTelefono, gbc2);
             gbc2.gridx = 1;
             dialogo.add(campoTelefono, gbc2);
 
-            gbc2.gridx = 0; gbc2.gridy = 4;
+            gbc2.gridx = 0;
+            gbc2.gridy = 4;
             dialogo.add(lblSocio, gbc2);
             gbc2.gridx = 1;
             dialogo.add(campoSocio, gbc2);
 
-            gbc2.gridx = 0; gbc2.gridy = 5; gbc2.gridwidth = 2;
+            gbc2.gridx = 0;
+            gbc2.gridy = 5;
+            gbc2.gridwidth = 2;
             dialogo.add(btnInsertar, gbc2);
 
             btnInsertar.addActionListener(ae -> {
@@ -325,32 +335,39 @@ public class TrabajadorPanel extends JPanel {
 
             JButton btnInsertar = new JButton("Insertar");
 
-            gbc2.gridx = 0; gbc2.gridy = 0;
+            gbc2.gridx = 0;
+            gbc2.gridy = 0;
             dialogo.add(lblNombre, gbc2);
             gbc2.gridx = 1;
             dialogo.add(campoNombre, gbc2);
 
-            gbc2.gridx = 0; gbc2.gridy = 1;
+            gbc2.gridx = 0;
+            gbc2.gridy = 1;
             dialogo.add(lblApellidos, gbc2);
             gbc2.gridx = 1;
             dialogo.add(campoApellidos, gbc2);
 
-            gbc2.gridx = 0; gbc2.gridy = 2;
+            gbc2.gridx = 0;
+            gbc2.gridy = 2;
             dialogo.add(lblCorreo, gbc2);
             gbc2.gridx = 1;
             dialogo.add(campoCorreo, gbc2);
 
-            gbc2.gridx = 0; gbc2.gridy = 3;
+            gbc2.gridx = 0;
+            gbc2.gridy = 3;
             dialogo.add(lblTelefono, gbc2);
             gbc2.gridx = 1;
             dialogo.add(campoTelefono, gbc2);
 
-            gbc2.gridx = 0; gbc2.gridy = 4;
+            gbc2.gridx = 0;
+            gbc2.gridy = 4;
             dialogo.add(lblSocio, gbc2);
             gbc2.gridx = 1;
             dialogo.add(campoSocio, gbc2);
 
-            gbc2.gridx = 0; gbc2.gridy = 5; gbc2.gridwidth = 2;
+            gbc2.gridx = 0;
+            gbc2.gridy = 5;
+            gbc2.gridwidth = 2;
             dialogo.add(btnInsertar, gbc2);
 
             btnInsertar.addActionListener(ae -> {
@@ -388,7 +405,6 @@ public class TrabajadorPanel extends JPanel {
                 dialogo.setLocationRelativeTo(null);
 
 
-
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.insets = new Insets(10, 10, 10, 10);
                 gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -407,17 +423,24 @@ public class TrabajadorPanel extends JPanel {
                 JButton btnConfirmar = new JButton("Modificar precio");
 
                 // Añadir componentes
-                gbc.gridx = 0; gbc.gridy = 0;
+                gbc.gridx = 0;
+                gbc.gridy = 0;
                 dialogo.add(labelJuego, gbc);
-                gbc.gridx = 1; gbc.weightx = 0.5;
+                gbc.gridx = 1;
+                gbc.weightx = 0.5;
                 dialogo.add(comboJuegos, gbc);
 
-                gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
+                gbc.gridx = 0;
+                gbc.gridy = 1;
+                gbc.weightx = 0;
                 dialogo.add(labelPrecio, gbc);
-                gbc.gridx = 1; gbc.weightx = 0.5;
+                gbc.gridx = 1;
+                gbc.weightx = 0.5;
                 dialogo.add(campoPrecio, gbc);
 
-                gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 2;
+                gbc.gridx = 0;
+                gbc.gridy = 2;
+                gbc.weightx = 2;
                 dialogo.add(btnConfirmar, gbc);
 
                 // Acción del botón confirmar
@@ -426,10 +449,10 @@ public class TrabajadorPanel extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         String nombreJuego = (String) comboJuegos.getSelectedItem();
                         String precio = campoPrecio.getText();
-                                            // Positivo, cero o más digitos antes del punto, punto opcional, al menos un digitos despues del punto
+                        // Positivo, cero o más digitos antes del punto, punto opcional, al menos un digitos despues del punto
                         if (!precio.matches(("[+]?\\d*\\.?\\d+"))) {
                             JOptionPane.showMessageDialog(dialogo, "Debes introducir solo números positivos", "Error", JOptionPane.ERROR_MESSAGE);
-                        }  else if (!nombreJuego.isEmpty() && !precio.isEmpty()) {
+                        } else if (!nombreJuego.isEmpty() && !precio.isEmpty()) {
                             gestor.actualizarPrecio(nombreJuego, Float.parseFloat(precio));
                             JOptionPane.showMessageDialog(dialogo, "Precio modificado correctamente.");
                             dialogo.dispose();
@@ -456,7 +479,6 @@ public class TrabajadorPanel extends JPanel {
                 dialogo.setLocationRelativeTo(null);
 
 
-
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.insets = new Insets(10, 10, 10, 10);
                 gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -475,17 +497,24 @@ public class TrabajadorPanel extends JPanel {
                 JButton btnConfirmar = new JButton("Modificar stock");
 
                 // Añadir componentes
-                gbc.gridx = 0; gbc.gridy = 0;
+                gbc.gridx = 0;
+                gbc.gridy = 0;
                 dialogo.add(labelJuego, gbc);
-                gbc.gridx = 1; gbc.weightx = 0.5;
+                gbc.gridx = 1;
+                gbc.weightx = 0.5;
                 dialogo.add(comboJuegos, gbc);
 
-                gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
+                gbc.gridx = 0;
+                gbc.gridy = 1;
+                gbc.weightx = 0;
                 dialogo.add(labelStock, gbc);
-                gbc.gridx = 1; gbc.weightx = 0.5;
+                gbc.gridx = 1;
+                gbc.weightx = 0.5;
                 dialogo.add(campoStock, gbc);
 
-                gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 2;
+                gbc.gridx = 0;
+                gbc.gridy = 2;
+                gbc.weightx = 2;
                 dialogo.add(btnConfirmar, gbc);
 
                 // Acción del botón confirmar
@@ -498,7 +527,7 @@ public class TrabajadorPanel extends JPanel {
                         // Positivo y entero
                         if (!stock.matches(("\\d+"))) {
                             JOptionPane.showMessageDialog(dialogo, "Debes introducir solo números positivos", "Error", JOptionPane.ERROR_MESSAGE);
-                        }  else if (!nombreJuego.isEmpty() && !stock.isEmpty()) {
+                        } else if (!nombreJuego.isEmpty() && !stock.isEmpty()) {
                             gestor.actualizarStock(nombreJuego, Integer.parseInt(stock));
                             JOptionPane.showMessageDialog(dialogo, "Precio modificado correctamente.");
                             dialogo.dispose();
@@ -524,7 +553,6 @@ public class TrabajadorPanel extends JPanel {
                 dialogo.setLocationRelativeTo(null);
 
 
-
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.insets = new Insets(10, 10, 10, 10);
                 gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -539,12 +567,16 @@ public class TrabajadorPanel extends JPanel {
                 JButton btnConfirmar = new JButton("Eliminar");
 
                 // Añadir componentes
-                gbc.gridx = 0; gbc.gridy = 0;
+                gbc.gridx = 0;
+                gbc.gridy = 0;
                 dialogo.add(labelJuego, gbc);
-                gbc.gridx = 1; gbc.weightx = 0.5;
+                gbc.gridx = 1;
+                gbc.weightx = 0.5;
                 dialogo.add(comboJuegos, gbc);
 
-                gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 2;
+                gbc.gridx = 0;
+                gbc.gridy = 1;
+                gbc.weightx = 2;
                 dialogo.add(btnConfirmar, gbc);
 
                 // Acción del botón confirmar

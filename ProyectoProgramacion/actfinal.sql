@@ -35,9 +35,9 @@ CREATE TABLE ventas (
     id_cliente INT,
     id_trabajador INT,
     cantidad int,
-    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente),
-    FOREIGN KEY (id_juego) REFERENCES juegos(id_juego),
-    FOREIGN KEY (id_trabajador) REFERENCES trabajadores(id_trabajador)
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente) on delete cascade,
+    FOREIGN KEY (id_juego) REFERENCES juegos(id_juego) on delete cascade,
+    FOREIGN KEY (id_trabajador) REFERENCES trabajadores(id_trabajador) on delete cascade
 );
 
 INSERT INTO juegos (nombre, genero, pegi, precio, stock) VALUES

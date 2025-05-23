@@ -16,7 +16,7 @@ public class InicioPanel extends JPanel {
     GameStoreFrame frame;
     public InicioPanel(GameStoreFrame frame) {
         this.frame = frame;
-        imgFondo = new ImageIcon("src/main/java/org/example/imagenes/fondo.jpg").getImage();
+        imgFondo = new ImageIcon(getClass().getResource("/img/fondo.jpg")).getImage();
         setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -85,7 +85,6 @@ public class InicioPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String usuario = campoUsuario.getText();
                 String contrasena = campoContraseña.getText();
-                System.out.println(usuario);
                 Gestor gestor = new Gestor();
                 boolean loginCorrecto = gestor.login(usuario, contrasena);
 
