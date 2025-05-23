@@ -222,6 +222,7 @@ public class TrabajadorPanel extends JPanel {
 
 
         btnAgregarCliente.addActionListener(e -> {
+            // pasar frame para que esté centrado y encima de la ventana padre
             JDialog dialogo = new JDialog((Frame) SwingUtilities.getWindowAncestor(btnAgregarCliente), "Agregar Cliente", true);
             dialogo.setSize(400, 300);
             dialogo.setLayout(new GridBagLayout());

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class InicioPanel extends JPanel {
+
     private Image imgFondo;
     public JButton btnInicio;
     public JButton btnCerrar;
@@ -19,6 +20,7 @@ public class InicioPanel extends JPanel {
         imgFondo = new ImageIcon(getClass().getResource("/img/fondo.jpg")).getImage();
         setLayout(new GridBagLayout());
 
+        // gbc es la estructrura
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -100,10 +102,12 @@ public class InicioPanel extends JPanel {
                     campoUsuario.setText("");
                     campoContraseña.setText("");
                 } else {
+                    // Muestra un mensaje por pantalla
                     JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+
 
         btnCerrar.addActionListener(new ActionListener() {
             @Override
@@ -113,6 +117,7 @@ public class InicioPanel extends JPanel {
         });
     }
 
+    // Pintar fondo
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

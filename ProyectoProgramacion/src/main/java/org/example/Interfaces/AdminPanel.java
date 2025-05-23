@@ -14,7 +14,6 @@ public class AdminPanel extends JPanel {
     public JButton btnEliminarTrabajador;
     public JButton btnmodificarTrabajador;
     public JButton btnListarTrabajadores;
-    public JButton btnVentaTrabajador;
     public JButton btnCerrarSesion;
     private GameStoreFrame frame;
 
@@ -23,9 +22,10 @@ public class AdminPanel extends JPanel {
         imgFondo = new ImageIcon(getClass().getResource("/img/fondo.jpg")).getImage();
         setLayout(new BorderLayout());
 
+        // Crear un panel
         // NAVBAR SUPERIOR
         JPanel navBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        navBar.setOpaque(false);
+        navBar.setOpaque(true);
 
         btnCerrarSesion = new JButton("Cerrar sesión");
         btnCerrarSesion.setForeground(Color.black);
@@ -38,6 +38,7 @@ public class AdminPanel extends JPanel {
         // CUERPO PRINCIPAL
         JPanel cuerpo = new JPanel(new GridBagLayout());
         cuerpo.setOpaque(false);
+        //estructura del panel, grid
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.VERTICAL;
@@ -95,10 +96,11 @@ public class AdminPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Crear ventana emergente
+                // pasar frame para que esté centrado y encima de la ventana padre
                 JDialog dialogo = new JDialog((Frame) SwingUtilities.getWindowAncestor(btnInsertarTrabajador), "Insertar Trabajador", true);
                 dialogo.setSize(300, 200);
-                dialogo.setLayout(new GridBagLayout());
-                dialogo.setLocationRelativeTo(null);
+                dialogo.setLayout(new GridBagLayout()); // para organizar botones
+                dialogo.setLocationRelativeTo(null);    // centrarlo
 
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.insets = new Insets(10, 10, 10, 10);
@@ -133,18 +135,23 @@ public class AdminPanel extends JPanel {
                 btnConfirmar.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        // coge el texto metido en los campos de textos
                         String usuario = campoUsuario.getText();
                         String contrasena = campoContrasena.getText();
 
+                            //comprobar que no esté vacío y no sea admin
                             if (!usuario.isEmpty() && !contrasena.isEmpty() && !usuario.equals("admin")) {
                             Trabajadores nuevo = new Trabajadores(usuario, contrasena); // Sin encargado
                             Gestor gestor = new Gestor();
+                            // comprobar que no exista
                             if (gestor.existeUsuario(nuevo.getUsuario())) {
+                                //muestra mensaje
                                 JOptionPane.showMessageDialog(dialogo, "Ese usuario ya está en uso", "Error", JOptionPane.ERROR_MESSAGE);
                             }
                             else {
                                 gestor.insertarTrabajador(nuevo);
                                 JOptionPane.showMessageDialog(dialogo, "Trabajador insertado correctamente.");
+                                //cierra dialogo
                                 dialogo.dispose();
                             }
                         } else if (usuario.equals("admin")) {
@@ -154,7 +161,7 @@ public class AdminPanel extends JPanel {
                         }
                     }
                 });
-
+                // hace visible el dialogo
                 dialogo.setVisible(true);
             }
         });
@@ -165,7 +172,7 @@ public class AdminPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Crear ventana emergente
-                JDialog dialogo = new JDialog((Frame) SwingUtilities.getWindowAncestor(btnEliminarTrabajador), "Eliminar Juego", true);
+                JDialog dialogo = new JDialog((Frame) SwingUtilities.getWindowAncestor(btnEliminarTrabajador), "Eliminar Trabajador", true);
                 dialogo.setSize(400, 200);
                 dialogo.setLayout(new GridBagLayout());
                 dialogo.setLocationRelativeTo(null);
@@ -173,10 +180,13 @@ public class AdminPanel extends JPanel {
 
 
                 GridBagConstraints gbc = new GridBagConstraints();
+                // margen
                 gbc.insets = new Insets(10, 10, 10, 10);
+                //alinea horizontalmente
                 gbc.fill = GridBagConstraints.HORIZONTAL;
 
                 // Campos
+                //Mete en el combobox todos los trabajadores quitando al admin
                 JLabel labelTrabajador = new JLabel("Trabajador:");
                 JComboBox<String> comboTrabajadores = new JComboBox<>();
                 Gestor gestor = new Gestor();
@@ -201,6 +211,7 @@ public class AdminPanel extends JPanel {
                 btnConfirmar.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        //coge el trabajador seleccionado
                         String nombreTrabajador = (String) comboTrabajadores.getSelectedItem();
                         // Positivo y entero
                         if (nombreTrabajador == null) {
@@ -225,7 +236,7 @@ public class AdminPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Crear ventana emergente
-                JDialog dialogo = new JDialog((Frame) SwingUtilities.getWindowAncestor(btnInsertarTrabajador), "Insertar Trabajador", true);
+                JDialog dialogo = new JDialog((Frame) SwingUtilities.getWindowAncestor(btnInsertarTrabajador), "Modificar Trabajador", true);
                 dialogo.setSize(400, 200);
                 dialogo.setLayout(new GridBagLayout());
                 dialogo.setLocationRelativeTo(null);
@@ -279,14 +290,18 @@ public class AdminPanel extends JPanel {
                         String usuarioNew = campoUsuarioNew.getText();
                         String contrasena = campoContrasena.getText();
 
+                        // verifica que no esté vacío y que sea admin para que no se cambie el nombre
                         if (!usuario.isEmpty() && !contrasena.isEmpty() && !usuarioNew.isEmpty() &&  usuario.equals("admin")) {
                             Gestor gestor = new Gestor();
                             gestor.modificarTrabajador(usuario, "admin", contrasena);
                             JOptionPane.showMessageDialog(dialogo, "Trabajador insertado correctamente. \n Recuerda que el nombre de admin se mantendra siempre");
                             dialogo.dispose();
 
+                            // verifica que no esté vacío y que exista el usuario para no hacerlo
                         } else if (!usuario.isEmpty() && !contrasena.isEmpty() && !usuarioNew.isEmpty() && gestor.existeUsuario(usuarioNew)) {
                             JOptionPane.showMessageDialog(dialogo, "Nombre de usuario en uso", "Error", JOptionPane.ERROR_MESSAGE);
+
+                            // verifica que no este vacio
                         } else if (!usuario.isEmpty() && !contrasena.isEmpty() && !usuarioNew.isEmpty()) {
                             Gestor gestor = new Gestor();
                             gestor.modificarTrabajador(usuario, usuarioNew, contrasena);

@@ -20,38 +20,23 @@ public class Gestor {
     private static final String PASSWORD = "";
     public static String nombre;
 
+    // Intentar establecer una conexión con la base de datos
     public static Connection conectar() {
         try {
             return getConnection(URL, USUARIO, PASSWORD);
         } catch (SQLException e) {
             System.out.println("Error al conectar con la base de datos");
+            //muestra error por consola
             e.printStackTrace();
             return null;
         }
     }
 
-
-
-    public boolean existeJuego(String nombreJuego) {
-        String sql = "SELECT id_juego FROM trabajadores WHERE nombre = ?";
-
-        try (Connection con = conectar();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setString(1, nombreJuego);
-            try (ResultSet rs = pst.executeQuery()) {
-                return rs.next(); // Si hay al menos una fila, el usuario existe
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public void mostrarJuegosEnTabla() {
+        // codigo sql
         String sql = "SELECT * FROM juegos";
 
+        // se establece la conexión
         try (Connection con = conectar(); PreparedStatement pst = con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
 
@@ -64,8 +49,9 @@ public class Gestor {
             modelo.addColumn("Precio");
             modelo.addColumn("Stock");
 
-            // Llenar modelo con los datos de la base de datos
+            // sirve para verificar que hayan más datos
             while (rs.next()) {
+                // coge los atributos de juego
                 int id_juego = rs.getInt("id_juego");
                 String nombre = rs.getString("nombre");
                 String genero = rs.getString("genero");
@@ -73,11 +59,17 @@ public class Gestor {
                 float precio = rs.getFloat("precio");
                 int stock = rs.getInt("stock");
 
+                //añade la fila al modelo de la tabla
                 modelo.addRow(new Object[]{id_juego, nombre, genero, pegi, precio, stock});
             }
 
             // Crear tabla con el modelo
+
+            // modelo es un objeto que contiene los datos y la estructura de la tabla.
+            // Al pasar modelo al constructor, le dices a la tabla qué datos mostrar y cómo organizarlos.
             JTable tabla = new JTable(modelo);
+
+            // para que se pueda desplazar
             JScrollPane scrollPane = new JScrollPane(tabla);
 
             // Crear ventana para mostrar la tabla
@@ -90,6 +82,7 @@ public class Gestor {
 
             // Botón cerrar
             JButton btnCerrar = new JButton("Cerrar");
+            // cierra ventana
             btnCerrar.addActionListener(e -> dialogo.dispose());
             dialogo.add(btnCerrar, BorderLayout.SOUTH);
 
@@ -104,6 +97,7 @@ public class Gestor {
 
     //Panel Administrador
     public void insertarTrabajador(Trabajadores a) {
+        //
         String sql = "INSERT INTO trabajadores (usuario, contrasena) VALUES (?, ?)";
         try (Connection con = conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
             pst.setString(1, a.getUsuario());
