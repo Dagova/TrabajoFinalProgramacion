@@ -310,7 +310,7 @@ public class TrabajadorPanel extends JPanel {
 
 
         btnInssertarJuego.addActionListener(e -> {
-            JDialog dialogo = new JDialog((Frame) SwingUtilities.getWindowAncestor(btnAgregarCliente), "Agregar Cliente", true);
+            JDialog dialogo = new JDialog((Frame) SwingUtilities.getWindowAncestor(btnAgregarCliente), "Agregar Juego", true);
             dialogo.setSize(400, 300);
             dialogo.setLayout(new GridBagLayout());
             dialogo.setLocationRelativeTo(null);
@@ -384,10 +384,10 @@ public class TrabajadorPanel extends JPanel {
                     Gestor gestor = new Gestor();
                     boolean exito = gestor.insertarJuego(nombre, genero, pegi, precio, stock);
                     if (exito) {
-                        JOptionPane.showMessageDialog(dialogo, "Cliente insertado correctamente.");
+                        JOptionPane.showMessageDialog(dialogo, "Juego insertado correctamente.");
                         dialogo.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(dialogo, "Error al insertar cliente", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dialogo, "Error al insertar Juego", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
