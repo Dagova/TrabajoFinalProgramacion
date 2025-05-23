@@ -1,6 +1,6 @@
 # Proyecto Gestión de Tienda de Videojuegos 
 
-Aplicación de escritorio desarrollada en **Java** con base de datos **MySQL** para la gestión de stock, clientes y ventas.
+Aplicación de escritorio desarrollada en **Java** con base de datos **MySQL** para la gestión de stock, clientes, juegos y ventas.
 
 ##  Acceso
 
@@ -10,6 +10,6 @@ Aplicación de escritorio desarrollada en **Java** con base de datos **MySQL** p
 ##  Funciones principales
 
 - Login de administrador y trabajadores
-- Gestión de videojuegos, clientes y ventas
+- Gestión de stock, clientes, juegos y ventas
 
 Desarrollado por Lorenzo Cruz Fernández y David González Valderrama.
